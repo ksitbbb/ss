@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int FIFO(char s[], char F[], int f, int l){
+void FIFO(char s[], char F[], int f, int l){
     int i,j,k,flag=0,cnt=0;
     printf("\n\tPAGE\t\tFRAMES\t\tFAULTS");
     for(i=0;i<l;i++){
@@ -27,6 +27,7 @@ int FIFO(char s[], char F[], int f, int l){
         if(j==f) j=0;
     }
 }
+
 int findLRU(int time[],int n){
     int i,minimum=time[0],pos=0;
     for(i=1;i<n;i++){
@@ -37,7 +38,7 @@ int findLRU(int time[],int n){
     }return pos;
 }
 
-int lru(char s[], char F[],int f,int l){
+void lru(char s[], char F[],int f,int l){
     int counter=0,time[10],flag1,flag2,i,j,pos,faults=0,page;
     for(i=0;i<f;++i)
         F[i]=-1;
@@ -76,7 +77,6 @@ int lru(char s[], char F[],int f,int l){
             printf("%d\t",F[j]);
     }
     printf("\n\nTotal page faults = %d",faults);
-    return 0;
 }
 
 int main(){
@@ -97,12 +97,24 @@ int main(){
             scanf("%s",s);
         }
         switch(ch){
-            case 1: for(i=0;i<f;i++){F[i]=-1;}FIFO(s,F,f,l);break;
-            case 2: for(i=0;i<f;i++){F[i]=-1;}lru(s,F,f,l);break;
+            case 1: 
+                for(i=0;i<f;i++)
+                    F[i]=-1;
+                
+                FIFO(s,F,f,l);
+                
+                break;
+           
+            case 2: 
+                for(i=0;i<f;i++) 
+                    F[i]=-1;lru(s,F,f,l);
+                break;
+
             default:printf("\n");exit(0);
         }
         printf("\n\nPress 1 to continue ....0 to exit : ");
         scanf("%d",&YN);
+
     }while(YN==1);
     return 0;
 }
