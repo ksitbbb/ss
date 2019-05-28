@@ -7,8 +7,16 @@ char BUFFER[20], G_prod[20];
 char table[4][3][10] ={"NT","a","b","A","aBa","Error",
         "B","Error","bB",
         "B","Error","ε",};
-char pop(){return STACK[TOP--];}
-void push(char ch){STACK[++TOP] = ch;}
+
+char pop(){
+    return STACK[TOP--];
+}
+
+void push(char ch){
+    STACK[++TOP] = ch;
+}
+
+
 void stack_content()
 {
     if (TOP != -1)
@@ -21,7 +29,15 @@ void stack_content()
     }
     return;
 }
-int isterm(char c) {return (c >= 'a' && c <= 'z') ? 1:0;}
+
+int isterm(char c) {
+    if(c >= 'a' && c <= 'z') 
+        return 1;
+    else 
+        return 0;
+}
+
+
 int Parser_table(char stack_top, char buf_value, int flag)
 {
     int r, c;
@@ -41,10 +57,13 @@ int Parser_table(char stack_top, char buf_value, int flag)
     case 'b':
         c = 2;
     }
-    if (strcmp(table[r][c], "error") == 0) return 0;
-    if (strcmp(table[r][c], "ε") != 0) strcpy(G_prod, table[r][c]);
+    if (strcmp(table[r][c], "error") == 0) 
+        return 0;
+    if (strcmp(table[r][c], "ε") != 0) 
+        strcpy(G_prod, table[r][c]);
     return 1;
 }
+
 int main()
 {
     int i, j, stln;

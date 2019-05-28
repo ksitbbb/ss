@@ -4,8 +4,10 @@
     int yylex();
     int yyerror(const char *s);
 %}
+
 %token A B
 %%
+
 input:s'\n' {printf("Successful Grammer\n");exit(0);}
 s: A y B| B
 y: ; | A y
