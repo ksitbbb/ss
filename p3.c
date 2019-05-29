@@ -4,18 +4,26 @@
 char STACK[20] = "\0";
 int TOP = -1, B_ptr = 0;
 char BUFFER[20], G_prod[20];
-char table[4][3][10] ={"NT","a","b","A","aBa","Error",
-        "B","Error","bB",
-        "B","Error","ε",};
+char table[3][3][10] = {
+    "NT",
+    "a",
+    "b",
+    "A",
+    "aBa",
+    "Error",
+    "B",
+    "#",
+    "bB"};
 
-char pop(){
+char pop()
+{
     return STACK[TOP--];
 }
 
-void push(char ch){
+void push(char ch)
+{
     STACK[++TOP] = ch;
 }
-
 
 void stack_content()
 {
@@ -30,13 +38,13 @@ void stack_content()
     return;
 }
 
-int isterm(char c) {
-    if(c >= 'a' && c <= 'z') 
+int isterm(char c)
+{
+    if (c >= 'a' && c <= 'z')
         return 1;
-    else 
+    else
         return 0;
 }
-
 
 int Parser_table(char stack_top, char buf_value, int flag)
 {
@@ -47,7 +55,10 @@ int Parser_table(char stack_top, char buf_value, int flag)
         r = 1;
         break;
     case 'B':
-        r = (flag <= 5) ? 2:3;
+        if (flag <= 5)
+            r = 2;
+        else
+            r = 3;
     }
     switch (buf_value)
     {
@@ -57,9 +68,9 @@ int Parser_table(char stack_top, char buf_value, int flag)
     case 'b':
         c = 2;
     }
-    if (strcmp(table[r][c], "error") == 0) 
+    if (strcmp(table[r][c], "error") == 0)
         return 0;
-    if (strcmp(table[r][c], "ε") != 0) 
+    if (strcmp(table[r][c], "#") != 0)
         strcpy(G_prod, table[r][c]);
     return 1;
 }
@@ -103,7 +114,7 @@ int main()
             printf("3. Error Entry in Parse Table ");
         else if (Parser_table(STACK[TOP], BUFFER[B_ptr], flag))
         {
-            if (flag < 5 && strcmp(G_prod, "?") != 0)
+            if (flag < 5 && strcmp(G_prod, "#") != 0)
             {
                 stack_content();
                 printf("\n4. flag = %d * %s*\t", flag, G_prod);
@@ -116,13 +127,13 @@ int main()
             else
             {
                 stack_content();
-                printf("\n4.1 flag = %d *reduce by %s*", flag, "B->ε");
+                printf("\n4.1 flag = %d *reduce by %s*", flag, "B->#");
                 pop();
                 B_ptr++;
             }
         }
     }
-    if (STACK[TOP] == '$' && BUFFER[B_ptr]==';')
+    if (STACK[TOP] == '$' && BUFFER[B_ptr] == ';')
         printf("\n** The string is accepted **\n");
     else
         printf("\n** The string is not accepted **\n");

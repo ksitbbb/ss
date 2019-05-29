@@ -16,6 +16,7 @@ int main(){
         }else{
             if(tset[row][0][0]=='+'){
                 printf("\nLD R1,%s",tset[row][1]);
+
                 printf("\nLD R2,%s",tset[row][2]);
                 printf("\nADD R1,R1,R2");
             }else{
